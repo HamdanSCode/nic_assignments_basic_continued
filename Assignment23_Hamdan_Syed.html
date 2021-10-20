@@ -1,0 +1,32 @@
+<html>
+
+    <head>
+        <script>
+
+            function output(){
+                let ob = {x:document.getElementById("myBoxX").value ,y:document.getElementById("myBoxY").value ,width: document.getElementById("myBoxWidth").value ,height: document.getElementById("myBoxHeight").value }                                  
+                let toContainer = document.getElementById('container');
+                toContainer.innerHTML = "your object<br>" + "x: "+ ob.x +"\xa0\xa0\xa0 y: " + ob.y + "<br>" +"width: " + ob.width + "\xa0\xa0\xa0height: " + ob.height;
+                
+            }
+            
+        </script>
+   </head>
+   <body>
+       Please put your values into the boxes below x,y,width,height respectively
+       <p>
+        <input id="myBoxX" type="text"></input>
+        <input id="myBoxY" type="text"></input>
+        <input id="myBoxWidth" type="text"></input>
+        <input id="myBoxHeight" type="text"></input>
+            <input type='button' onclick='output()' value='Pog the Belt'>       
+       </p>     
+       
+         <div id='container'>
+           <p>
+               stuff goes below here:
+           </p>
+       </div>
+   </body>
+
+</html>
