@@ -2,9 +2,16 @@
 
     <head>
         <script>
-
+            function makeObject(inX,inY,inWidth,inHeight){
+                ob = {x: parseInt(inX), y:parseInt(inY), width:parseInt(inWidth), height:parseInt(inHeight)};
+                return ob
+            }
             function output(){
-                let ob = {x:document.getElementById("myBoxX").value ,y:document.getElementById("myBoxY").value ,width: document.getElementById("myBoxWidth").value ,height: document.getElementById("myBoxHeight").value }                                  
+                let ob = makeObject(document.getElementById("myBoxX").value 
+                    ,document.getElementById("myBoxY").value 
+                    ,document.getElementById("myBoxWidth").value 
+                    ,document.getElementById("myBoxHeight").value 
+                )                                  
                 let toContainer = document.getElementById('container');
                 toContainer.innerHTML = "your object<br>" + "x: "+ ob.x +"\xa0\xa0\xa0 y: " + ob.y + "<br>" +"width: " + ob.width + "\xa0\xa0\xa0height: " + ob.height;
                 
@@ -19,7 +26,7 @@
         <input id="myBoxY" type="text"></input>
         <input id="myBoxWidth" type="text"></input>
         <input id="myBoxHeight" type="text"></input>
-            <input type='button' onclick='output()' value='Pog the Belt'>       
+        <input type='button' onclick='output(document.getElementById("myBoxX"))' value='Pog the Belt'>       
        </p>     
        
          <div id='container'>
