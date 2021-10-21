@@ -1,0 +1,68 @@
+<html>
+
+    <head>
+        <script>
+            function makeObject(stringArray){
+                let properties = [];
+                let start = 0;
+                let k = 0;  //need this extra index value for assigning values to the array
+                //turn the string array holding our object info into the different parts we need
+                for(let i = 0; i<stringArray.length; i++){
+                    if(stringArray[i]==',')
+                    {
+                        properties[k] = stringArray.substr(start,i);    //getting the value up to the comma
+                        start = i + 1;
+                        k++
+                    }
+                }
+                properties[3] = stringArray.substr(start,stringArray.length);   //get final value after last comma
+                ob = {x: parseInt(properties[0]),y: parseInt(properties[1]),width: parseInt(properties[2]),height: parseInt(properties[3])} //make object
+                return ob;   //return object
+            }
+            function doesOverLap(ob1,ob2){
+                ob1XMax = ob1.x+ob1.width;
+                ob1YMax = ob1.y+ob1.height;
+                ob2XMax = ob2.x+ob2.width;
+                ob2YMax = ob2.y+ob2.height;
+                //compare Xmax and Xmin of both objects,
+                //if Xmax or Xmin is in between either of the other objects Xmax and Xmin 
+                if ((ob1.x<=ob2.x&&ob2.x<=ob1XMax) || (ob2.x<=ob1.x && ob1.x<=ob2XMax)){
+                    console.log("entered first if");
+                    if((ob1.y<=ob2.y&&ob2.y<=ob1YMax)||(ob2.y<=ob1.y && ob1.y<=ob2YMax)){
+                        console.log("entered second if");
+                        //if Ymax or Ymin is in between either of the other objects Ymax and Ymin
+                        //return true
+                        return true;
+                    }
+                }
+                return false;   
+                //return false
+            }
+            function output(){
+                let ob1 = makeObject(document.getElementById("rectangle1").value)
+                let ob2 = makeObject(document.getElementById("rectangle2").value)
+                let toContainer = document.getElementById('container')
+                console.log("value of doesOverLap: "+doesOverLap(ob1,ob2));
+                if(doesOverLap(ob1,ob2) == true){toContainer.innerHTML = "your rectangles overlap!";}
+                else{toContainer.innerHTML = "your rectangles do not overlap";}
+                
+            }
+            
+        </script>
+   </head>
+   <body>
+       Please put your integer values in with no spaces like so: x,y,width,height
+       <p>
+        <input id="rectangle1" type="text" placeholder = "x,y,width,height"></input>
+        <input id="rectangle2" type="text" placeholder="x,y,width,height"></input>
+        <input type='button' onclick='output()' value='Pog rectangles!?!?!?!'>       
+       </p>     
+       
+         <div id='container'>
+           <p>
+               stuff goes below here:
+           </p>
+       </div>
+   </body>
+
+</html>
