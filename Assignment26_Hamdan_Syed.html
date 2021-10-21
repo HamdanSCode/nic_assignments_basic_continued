@@ -1,0 +1,73 @@
+<html>
+
+    <head>
+        <script>
+            "use strict";
+            const TILES = [[5],[5],[5],[5],[5]];    //this is considered a global array so I believe all caps i the correct case?
+            window.onLoad = giveArrValues();
+            function giveArrValues(){
+                for(let i = 0; i<5; i++){
+                    for(let k = 0; k<5; k++){
+                        TILES[i][k] = "X";
+                    }
+                }
+                TILES[2][2] = "O";
+            }
+
+            function tileString(row){
+                let tString = "";
+                for(let i = 0; i<5; i++){
+                    tString += TILES[row][i] + "\xA0".repeat(6);
+                }
+                return tString
+            }
+            function moveAdventurer(x,y){
+                x = parseInt(x);
+                y = parseInt(y);
+                for(let i = 0; i<5; i++){
+                    for (let k = 0; k<5; k++){
+                        if(TILES[i][k]=="O"){
+                            if(((i-y)<0 || (i-y)>4)||((k+x)<0 || (k+x)>4)){
+                                console.log("out of bounds, doing nothing instead of moving")
+                                return;
+                            }
+                            else{
+                                TILES[i][k]="X";
+                                TILES[i-y][k+x] = "O";
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+            function output(x,y){
+                moveAdventurer(x,y);
+                let toContainer = document.getElementById('container')
+                toContainer.innerHTML ="";
+                for(let i = 0; i<5; i++){
+                    toContainer.innerHTML += "\xA0".repeat(100)+ tileString(i)+"<br><br>";
+                }
+            }
+
+            //Make four buttons: Up, Down, Left, Right. Make an object for your adventurer with properties x and y. Print out your dungeon with X for 
+            //each square instead of the x,y in the last homework assignment, but put an O for the square where the adventurer is. When pressing the
+            //four buttons move the adventurer in that direction. Don't go out of bounds!
+        </script>
+   </head>
+   <body onload ="output(0,0)">
+       adventure is stored in the balls
+       <p>
+        <input type='button' onclick='output(0,1)' value='Up'>
+        <input type='button' onclick='output(0,-1)' value='Down'>
+        <input type='button' onclick='output(-1,0)' value='Left'>
+        <input type='button' onclick='output(1,0)' value='Right'>       
+       </p>     
+       
+         <div id='container'>
+           <p>
+               get out there adventurer!
+           </p>
+       </div>
+   </body>
+
+</html>
