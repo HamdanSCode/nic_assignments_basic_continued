@@ -1,0 +1,96 @@
+<html>
+
+    <head>
+        <script>
+            "use strict";
+            let adventurer = {x: 0, y:0};
+            const TILES = [[],[],[],[],[]];    //this is considered a global array so I believe all caps i the correct case?
+            window.onLoad = giveDungeonValues();
+            function giveDungeonValues(){
+                for(let i = 0; i<5; i++){
+                    for(let k = 0; k<5; k++){
+                        TILES[i][k] = "X";
+                    }
+                }
+                let k = 0;
+                var randX = 0;
+                var randY= 0;
+                while(k<5){
+                    randX=Math.floor(Math.random()*1000)%5;
+                    randY=Math.floor(Math.random()*1000)%5;
+                    if(randX!=0&&randY!=0){
+                        TILES[randX][randY] = "W";
+                        k++;
+                    } 
+                }
+            }
+
+            function tileString(row){
+                let tString = "";
+                for(let i = 0; i<5; i++){
+                    if(row==adventurer.x && i==adventurer.y){
+                        tString += "O" + "\xA0".repeat(6);
+                        continue;
+                    }
+                    if(TILES[row][i]=="W"){
+                        tString += TILES[row][i] + "\xA0".repeat(5);
+                        continue;
+                    }
+                    tString += TILES[row][i] + "\xA0".repeat(6);
+                }
+                return tString
+            }
+            function moveAdventurer(x,y){
+                x = parseInt(x);
+                y = parseInt(y);
+                for(let i = 0; i<5; i++){
+                    for (let k = 0; k<5; k++){
+                        if(i==adventurer.x && k==adventurer.y){
+                            if(((i-y)<0 || (i-y)>4)||((k+x)<0 || (k+x)>4)){
+                                console.log("out of bounds, doing nothing instead of moving")
+                                return;
+                            }
+                            else if(TILES[i-y][k+x]=="W"){
+                                console.log("Ran into a wall not allowing through");
+                                return;
+                            }
+                            else{
+                                adventurer.x=i-y;
+                                adventurer.y=k+x;
+                                return;
+                            }
+                        }
+                    }
+                }
+            }
+            function output(x,y){
+                moveAdventurer(x,y);
+                let toContainer = document.getElementById('container')
+                toContainer.innerHTML ="";
+                for(let i = 0; i<5; i++){
+                    toContainer.innerHTML += "\xA0".repeat(100)+ tileString(i)+"<br><br>";
+                }
+            }
+
+            //Make four buttons: Up, Down, Left, Right. Make an object for your adventurer with properties x and y. Print out your dungeon with X for 
+            //each square instead of the x,y in the last homework assignment, but put an O for the square where the adventurer is. When pressing the
+            //four buttons move the adventurer in that direction. Don't go out of bounds!
+        </script>
+   </head>
+   <body onload ="output(0,0)">
+       adventure is stored in the balls
+       <p>
+        <input type='button' onclick='output(0,1)' value='Up'>
+        <input type='button' onclick='output(0,-1)' value='Down'>
+        <input type='button' onclick='output(-1,0)' value='Left'>
+        <input type='button' onclick='output(1,0)' value='Right'>       
+       </p>     
+       
+         <div id='container'>
+           <p>
+               get out there adventurer!
+           </p>
+       </div>
+   </body>
+
+</html>
