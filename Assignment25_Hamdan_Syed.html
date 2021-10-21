@@ -1,0 +1,48 @@
+<html>
+
+    <head>
+        <script>
+            "use strict";
+            const TILES = [[5],[5],[5],[5],[5]];    //this is considered a global array so I believe all caps i the correct case?
+            function giveArrValues(){
+                for(let i = 0; i<5; i++){
+                    for(let k = 0; k<5; k++){
+                        TILES[i][k] = "x = "+k+","+"y = "+i;
+                    }
+                }
+            }
+            function tileString(row){
+                let tString = "";
+                for(let i = 0; i<5; i++){
+                    tString += TILES[row][i] + "\xA0\xA0\xA0"
+                }
+                console.log(tString);
+                return tString
+            }
+            function output(){
+                giveArrValues();
+                for(let i = 0;i<5; i++){console.log(TILES[i]);}
+                let toContainer = document.getElementById('container')
+                for(let i = 0; i<5; i++){
+                    toContainer.innerHTML += tileString(i)+"<br><br>";
+                }
+            }
+            //Make an array of arrays representing a dungeon tileset! (x is the first set of arrays, y is the second set of arrays). Make it 5x5 and fill each 
+            //square with its x,y value, ex: "3, 4". Remember it's 0 ordered like in all code! Then, write a function to print out the dungeon in logical 
+            //ordering so x goes left to right and y from top to bottom. 0,0 is in the top left corner.
+        </script>
+   </head>
+   <body>
+       Please put your integer values in with no spaces like so: x,y,width,height
+       <p>
+        <input type='button' onclick='output()' value='Pog rectangles!?!?!?!'>       
+       </p>     
+       
+         <div id='container'>
+           <p>
+               stuff goes below here:
+           </p>
+       </div>
+   </body>
+
+</html>
