@@ -3,9 +3,9 @@
     <head>
         <script>
             "use strict";
-            let adventurer = {x: 0, y:0};
-            const TILES = [[],[],[],[],[]];    //this is considered a global array so I believe all caps i the correct case?
-            window.onLoad = giveDungeonValues();
+            let adventurer = {x: 0, y:0};           //creating adventurer object to reference for positioning of User
+            const TILES = [[],[],[],[],[]];         //initializeing 2d array for dungeon
+            window.onLoad = giveDungeonValues();    //calling giveDungeonValues to give the 2d array a tileset
             function giveDungeonValues(){
                 for(let i = 0; i<5; i++){
                     for(let k = 0; k<5; k++){
@@ -16,53 +16,46 @@
                 var randX = 0;
                 var randY= 0;
                 while(k<5){
-                    randX=Math.floor(Math.random()*1000)%5;
-                    randY=Math.floor(Math.random()*1000)%5;
-                    if(randX!=0&&randY!=0){
-                        TILES[randX][randY] = "W";
-                        k++;
+                    randX=Math.floor(Math.random()*1000)%5; //get a random number 0-4
+                    randY=Math.floor(Math.random()*1000)%5; //same for Y
+                    if(randX!=0&&randY!=0){                 //makeing sure the wall does not spawn on user spawn
+                        TILES[randX][randY] = "W";          //place W on a random spot inside the array
+                        k++;                                //iterate 1 so that we end up placeing 5 walls total at end of loop
                     } 
                 }
             }
 
-            function tileString(row){
+            function tileString(row){                       //return the dungeon by row
                 let tString = "";
                 for(let i = 0; i<5; i++){
-                    if(row==adventurer.x && i==adventurer.y){
+                    if(row==adventurer.x && i==adventurer.y){   //if the adventurer is at that position put out O instead of whatever value is there
                         tString += "O" + "\xA0".repeat(6);
                         continue;
                     }
-                    if(TILES[row][i]=="W"){
+                    if(TILES[row][i]=="W"){                     //readjusted spaceing for W as leaving it makes the right side slightly more disorganized
                         tString += TILES[row][i] + "\xA0".repeat(5);
                         continue;
                     }
                     tString += TILES[row][i] + "\xA0".repeat(6);
                 }
-                return tString
+                return tString;                                  //return the row
             }
-            function moveAdventurer(x,y){
-                x = parseInt(x);
-                y = parseInt(y);
-                for(let i = 0; i<5; i++){
-                    for (let k = 0; k<5; k++){
-                        if(i==adventurer.x && k==adventurer.y){
-                            if(((i-y)<0 || (i-y)>4)||((k+x)<0 || (k+x)>4)){
-                                console.log("out of bounds, doing nothing instead of moving")
-                                return;
-                            }
-                            else if(TILES[i-y][k+x]=="W"){
-                                console.log("Ran into a wall not allowing through");
-                                return;
-                            }
-                            else{
-                                adventurer.x=i-y;
-                                adventurer.y=k+x;
-                                return;
-                            }
-                        }
-                    }
+            function moveAdventurer(x,y){                       //x,y coords taken on button press
+                if(((adventurer.y+y)<0 || (adventurer.y+y)>4)||((adventurer.x+x)<0 || (adventurer.x+x)>4)){ //if the adventurer is trying to go out of bounds
+                    console.log("out of bounds, doing nothing instead of moving")       //log it, do nothing and end function
+                    return;
                 }
+                else if(TILES[adventurer.x+x][adventurer.y+y]=="W"){                //if adventurer is trying to walk into a wall
+                    console.log("Ran into a wall not allowing through");            //log it, do nothing and end function
+                    return;
+                }
+                else{                                                               //if adventurer is trying to go to a valid location
+                    adventurer.x+=x;                                                //move adventurer there
+                    adventurer.y+=y;
+                    return;
+                    }
             }
+
             function output(x,y){
                 moveAdventurer(x,y);
                 let toContainer = document.getElementById('container')
@@ -80,10 +73,10 @@
    <body onload ="output(0,0)">
        adventure is stored in the balls
        <p>
-        <input type='button' onclick='output(0,1)' value='Up'>
-        <input type='button' onclick='output(0,-1)' value='Down'>
-        <input type='button' onclick='output(-1,0)' value='Left'>
-        <input type='button' onclick='output(1,0)' value='Right'>       
+        <input type='button' onclick='output(-1,0)' value='Up'>
+        <input type='button' onclick='output(1,0)' value='Down'>
+        <input type='button' onclick='output(0,-1)' value='Left'>
+        <input type='button' onclick='output(0,1)' value='Right'>       
        </p>     
        
          <div id='container'>
