@@ -20,10 +20,10 @@
                 return ob;   //return object
             }
             function doesOverLap(ob1,ob2){
-                ob1XMax = ob1.x+ob1.width;
-                ob1YMax = ob1.y+ob1.height;
-                ob2XMax = ob2.x+ob2.width;
-                ob2YMax = ob2.y+ob2.height;
+                let ob1XMax = ob1.x+ob1.width;
+                let ob1YMax = ob1.y+ob1.height;
+                let ob2XMax = ob2.x+ob2.width;
+                let ob2YMax = ob2.y+ob2.height;
                 //compare Xmax and Xmin of both objects,
                 //if Xmax or Xmin is in between either of the other objects Xmax and Xmin 
                 if ((ob1.x<=ob2.x&&ob2.x<=ob1XMax) || (ob2.x<=ob1.x && ob1.x<=ob2XMax)){
