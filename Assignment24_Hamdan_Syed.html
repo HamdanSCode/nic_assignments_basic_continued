@@ -43,7 +43,7 @@
                 let ob2 = makeObject(document.getElementById("rectangle2").value)
                 let toContainer = document.getElementById('container')
                 console.log("value of doesOverLap: "+doesOverLap(ob1,ob2));
-                if(doesOverLap(ob1,ob2) == true){toContainer.innerHTML = "your rectangles overlap!";}
+                if(doesOverLap(ob1,ob2)){toContainer.innerHTML = "your rectangles overlap!";}
                 else{toContainer.innerHTML = "your rectangles do not overlap";}
                 
             }
