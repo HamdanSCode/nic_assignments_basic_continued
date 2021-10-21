@@ -16,7 +16,7 @@
                     }
                 }
                 properties[3] = stringArray.substr(start,stringArray.length);   //get final value after last comma
-                ob = {x: parseInt(properties[0]),y: parseInt(properties[1]),width: parseInt(properties[2]),height: parseInt(properties[3])} //make object
+                let ob = {x: parseInt(properties[0]),y: parseInt(properties[1]),width: parseInt(properties[2]),height: parseInt(properties[3])} //make object
                 return ob;   //return object
             }
             function doesOverLap(ob1,ob2){
