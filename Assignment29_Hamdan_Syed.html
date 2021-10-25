@@ -1,0 +1,138 @@
+<html>
+
+    <head>
+        <script>
+            "use strict";
+            let adventurer = {x: 0, y:0};           //creating adventurer object to reference for positioning of User
+            let stairs = {x:4, y:4};
+            let floorsT = 0;                        //creating a counter for how many floors adventurer has gone up
+            const TILES = [[],[],[],[],[]];         //initializeing 2d array for dungeon
+            function move(key) {
+                switch (key.key){
+                    case 'ArrowUp':
+                        output(-1,0);
+                        // up arrow
+                        break;
+                    case 'ArrowDown':
+                        // down arrow
+                        output(1,0);
+                        break;
+                    case 'ArrowLeft':
+                        output(0,-1);
+                        // left arrow
+                        break;
+                    case 'ArrowRight':
+                        output(0,1);
+                        // right arrow
+                }
+            }
+
+            document.onkeydown = move;
+            function giveDungeonValues(){
+                for(let i = 0; i<5; i++){
+                    for(let k = 0; k<5; k++){
+                        TILES[i][k] = "X";
+                    }
+                }
+                let k = 0;
+                while(k<1){                         //keep trying to make a staircase till succesful
+                    stairs.x = Math.floor(Math.random()*5);
+                    stairs.y = Math.floor(Math.random()*5);
+                    if(stairs.x!=adventurer.x&&stairs.y!=adventurer.y){
+                    TILES[stairs.x][stairs.y] = "S";
+                    k++;
+                    }
+
+                }
+                k=0;
+                while(k<5){
+                    let goodspot = true;
+                    let randX=Math.floor(Math.random()*5); //get a random number 0-4
+                    let randY=Math.floor(Math.random()*5); //same for Y
+                    if(!(randX==adventurer.x&&randY==adventurer.y)&&(TILES[randX][randY]!="W")&&!(randX==stairs.x&&randY==stairs.y)){                 //makeing sure the wall does not spawn on user spawn
+                        //check if it's trying to spawn next to adventurer
+                            //set false if it is
+                        if((adventurer.x+1==randX&&adventurer.y==randY)||(adventurer.x-1==randX&&adventurer.y==randY)||(adventurer.y+1==randY&&adventurer.x==randX)||(adventurer.y-1==randY&&adventurer.x==randX)){
+                            goodspot=false;
+                        }
+                        //check if it's trying to spawn next to staircase
+                            //set false if it is
+                        if((stairs.x+1==randX&&stairs.y==randY)||(stairs.x-1==randX&&stairs.y==randY)||(stairs.y+1==randY&&stairs.x==randX)||(stairs.y-1==randY&&stairs.x==randX)){
+                            goodspot=false;
+                        }
+                        if(goodspot){   //if our flag for the wall placement to be fine is true
+                            TILES[randX][randY] = "W";          //place W on a random spot inside the array
+                            k++;                                //iterate 1 so that we end up placeing 5 walls total at end of loop
+                        }
+                    } //I had a huge amount of nested if statements that gave me nightmares, I redid how stairs worked so I could just have this easy comparison
+                }
+            }
+            function tileString(row){                       //return the dungeon by row
+                let tString = "";
+                for(let i = 0; i<5; i++){
+                    if(row==adventurer.x && i==adventurer.y){   //if the adventurer is at that position put out O instead of whatever value is there
+                        tString += "O" + "\xA0".repeat(6);
+                        continue;
+                    }
+                    if(TILES[row][i]=="W"){                     //readjusted spaceing for W as leaving it makes the right side slightly more disorganized
+                        tString += TILES[row][i] + "\xA0".repeat(5);
+                        continue;
+                    }
+                    if(row==stairs.x && i==stairs.y){                     //readjusted spaceing for S as leaving it makes the right side slightly more disorganized
+                        tString += TILES[row][i] + "\xA0".repeat(7);
+                        continue;
+                    }
+                    tString += TILES[row][i] + "\xA0".repeat(6);
+                }
+                return tString;                                  //return the row
+            }
+            function moveAdventurer(x,y){                       //x,y coords taken on button press
+                if(((adventurer.y+y)<0 || (adventurer.y+y)>4)||((adventurer.x+x)<0 || (adventurer.x+x)>4)){ //if the adventurer is trying to go out of bounds
+                    console.log("out of bounds, doing nothing instead of moving")       //log it, do nothing and end function
+                    return;
+                }
+                else if(TILES[adventurer.x+x][adventurer.y+y]=="W"){                //if adventurer is trying to walk into a wall
+                    console.log("Ran into a wall not allowing through");            //log it, do nothing and end function
+                    return;
+                }
+                else if(adventurer.x+x==stairs.x&&adventurer.y+y==stairs.y){
+                    floorsT+=1;                                                     //if they found the staircase
+                    adventurer.x+=x;                                                //move adventurer there and make a new tileset
+                    adventurer.y+=y;
+                    giveDungeonValues();
+                }
+                else{                                                               //if adventurer is trying to go to a valid location
+                    adventurer.x+=x;                                                //move adventurer there
+                    adventurer.y+=y;
+                    return;
+                }
+            }
+
+            function output(x,y){
+                moveAdventurer(x,y);
+                let toContainer = document.getElementById('container')
+                toContainer.innerHTML ="";
+                for(let i = 0; i<5; i++){
+                    toContainer.innerHTML += "\xA0".repeat(100)+ tileString(i)+"<br><br>";
+                }
+                toContainer.innerHTML += "<br><br>"+"\xA0".repeat(100)+"you have traversed: " + floorsT + " floors";
+            }
+
+            //Generate a staircase at a random spot in your dungeon. Make sure it's not where a wall is or where your adventurer starts from. Make
+            //sure it's not surrounded by walls either! When your adventurer reaches the staircase, regenerate the dungeon with the adventurer starting
+            //from where he ascended the staircase, and put new random walls and random staircase around the dungeon map, as if he went upstairs.
+        </script>
+   </head>
+   <body onload ="giveDungeonValues(),output(0,0)">
+       adventure is stored in the balls<br>
+       use the arrow keys to move, S is the staircase, go as far up as you can
+       <p>
+       </p>     
+         <div id='container'>
+           <p>
+               get out there adventurer!
+           </p>
+       </div>
+   </body>
+
+</html>
