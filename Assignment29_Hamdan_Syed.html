@@ -26,8 +26,6 @@
                         // right arrow
                 }
             }
-
-            document.onkeydown = move;
             function giveDungeonValues(){
                 for(let i = 0; i<5; i++){
                     for(let k = 0; k<5; k++){
@@ -82,7 +80,7 @@
                         tString += TILES[row][i] + "\xA0".repeat(7);
                         continue;
                     }
-                    tString += TILES[row][i] + "\xA0".repeat(6);
+                    tString += TILES[row][i] + "\xA0".repeat(6);    //&nbps; allows you to put a blank space in a url
                 }
                 return tString;                                  //return the row
             }
@@ -117,13 +115,18 @@
                 }
                 toContainer.innerHTML += "<br><br>"+"\xA0".repeat(100)+"you have traversed: " + floorsT + " floors";
             }
+            function main(){
+                giveDungeonValues();
+                output(0,0);
+                document.onkeydown = move;
+            }
 
             //Generate a staircase at a random spot in your dungeon. Make sure it's not where a wall is or where your adventurer starts from. Make
             //sure it's not surrounded by walls either! When your adventurer reaches the staircase, regenerate the dungeon with the adventurer starting
             //from where he ascended the staircase, and put new random walls and random staircase around the dungeon map, as if he went upstairs.
         </script>
    </head>
-   <body onload ="giveDungeonValues(),output(0,0)">
+   <body onload ="main();">
        adventure is stored in the balls<br>
        use the arrow keys to move, S is the staircase, go as far up as you can
        <p>
