@@ -1,0 +1,43 @@
+<html>
+
+    <head>
+        <script>
+            //what we want
+            //make a button that toggles off/on this functionality: 
+            //Write "hello {i}", where i counts up each time this prints, to the console every 5 seconds
+            //for i, have it be a variable in the main function (chose it to be a scope higher than main to allow it to continue from where it was)
+            //every 5 seconds
+            //create a flag, if it's on run, if it's off don't
+
+            let flag=true;      //need a true false flag to see if we should be starting or stopping the output
+            var myVar = null;   //where the interval ID will go that will be passed to setInterval and clearInterval
+            let myOb = {count:0};   //counts up the amount of outputs, made it global to allow it to continue from where it was
+                                            //it's an object because it was originally in the main function and I wanted to pass by reference to a function and didnt want to make 
+                                            //an array
+            function main(){
+                if (flag){                  //if we are supposed to be printing out
+                    flag=false;             //set the flag to false so when the user wants to stop we know to stop
+                    myVar = setInterval(print, 500);  //repeatedly puts out the message every x seconds, adjustable
+                }
+                else{                       //if were not supposed to be printing
+                    flag = true;            //set flag to true so we can start printing again when user clicks the button again
+                    clearInterval(myVar);   //stop the interval from printing
+                }
+            }
+            function print() {            //print function
+                document.getElementById('container').innerHTML = "Hello: {"+myOb.count+"}";
+                console.log("Hello: {"+myOb.count+"}")
+                myOb.count++;             //increaseing the count by 1
+            }
+
+        </script>
+    </head>
+    <body onload="main()">              <!---starts by calling main onload so we start counting immediately-->
+        <p>
+            <button id="myBtn" onclick="main()">start/stop</button>         
+        </p>     
+        <div id='container'>
+        </div>
+    </body>
+ 
+ </html>
