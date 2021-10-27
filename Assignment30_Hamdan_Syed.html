@@ -9,22 +9,20 @@
             //every 5 seconds
             //create a flag, if it's on run, if it's off don't
 
-            let flag=true;      //need a true false flag to see if we should be starting or stopping the output
-            var myVar = null;   //where the interval ID will go that will be passed to setInterval and clearInterval
-            let myOb = {count:0};   //counts up the amount of outputs, made it global to allow it to continue from where it was
-                                            //it's an object because it was originally in the main function and I wanted to pass by reference to a function and didnt want to make 
-                                            //an array
             function main(){
-                if (flag){                  //if we are supposed to be printing out
-                    flag=false;             //set the flag to false so when the user wants to stop we know to stop
-                    myVar = setInterval(print, 500);  //repeatedly puts out the message every x seconds, adjustable
-                }
-                else{                       //if were not supposed to be printing
-                    flag = true;            //set flag to true so we can start printing again when user clicks the button again
-                    clearInterval(myVar);   //stop the interval from printing
+                let myVar = null;           //where the interval will go
+                let myOb = {count:0};       //initializing an object starting at 0, so that I can pass a reference to count up
+                document.getElementById("myBtn").onclick = function(){      //when user clicks on button it calls this function
+                    if (myVar==null){       //if there is no interval
+                        myVar = setInterval(print,500,myOb);    //create an interval that prints
+                    }
+                    else {                  //if there is an interval
+                        clearInterval(myVar);   //clear the interval
+                        myVar=null;         //set the interval to null
+                    }
                 }
             }
-            function print() {            //print function
+            function print(myOb) {            //print function
                 document.getElementById('container').innerHTML = "Hello: {"+myOb.count+"}";
                 console.log("Hello: {"+myOb.count+"}")
                 myOb.count++;             //increaseing the count by 1
@@ -34,7 +32,7 @@
     </head>
     <body onload="main()">              <!---starts by calling main onload so we start counting immediately-->
         <p>
-            <button id="myBtn" onclick="main()">start/stop</button>         
+            <button id="myBtn">start/stop</button>         
         </p>     
         <div id='container'>
         </div>
